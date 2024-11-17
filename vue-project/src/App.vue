@@ -1,38 +1,29 @@
 <script setup>
 import { ref } from 'vue';
-  const count = ref(1);
-  const increment = () => {
-    count.value++
-  }
+
+const users = ref([
+  {id: 1, name: 'Эмиль', age: '21'},
+  {id: 2, name: 'Ева', age: '25'},
+  {id: 3, name: 'Олег', age: '50'},
+])
 </script>
 
 <template>
-  <div class="container">
-    <strong>
-      {{ count }}
-     </strong>
-    <button @click="increment">
-      Нажми, чтобы увеличить это число
-    </button>
-
+  <div>
+    <ul>
+      <li 
+      v-for="user in users" 
+      :key="user.id"
+      v-show="user.age > 21"
+      >
+        {{ user.name}} 
+        <sup v-if="user.name !== 'Олег'">{{ user.age }}</sup>
+        <sup v-else> в возрасте...</sup>
+      </li>
+    </ul>
   </div>
 </template>
 
 <style scoped>
-button {
-  border: 2px solid black;
-  border-radius: 5px;
-  font-size: 16px;
-  padding: 5px;
-  background-color: rgb(197, 197, 197);
-  cursor: pointer;
-}
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  font-size: 20px;
-  flex-direction: column;
-}
+
 </style>
