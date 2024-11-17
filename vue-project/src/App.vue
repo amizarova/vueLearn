@@ -12,7 +12,7 @@ import { ref } from 'vue';
       {{ count }}
      </strong>
     <button @click="increment">
-      Нажми, чтобы увеличить число
+      Нажми, чтобы увеличить это число
     </button>
 
   </div>
