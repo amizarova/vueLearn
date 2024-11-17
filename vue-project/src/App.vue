@@ -1,29 +1,59 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
-const users = ref([
-  {id: 1, name: 'Эмиль', age: '21'},
-  {id: 2, name: 'Ева', age: '25'},
-  {id: 3, name: 'Олег', age: '50'},
+const products = ref([
+  {title: 'Бананы', price: 54.5},
+  {title: 'Яблоки', price: 32},
+  {title: 'Хлеб', price: 21.59},
+  {title: 'Сметана', price: 178},
+  {title: 'Молоко', price: 122},
+  {title: 'Снеки', price: 46},
+  {title: 'Шоколад', price: 119.50},
+  {title: 'Морковь', price: 11.29},
 ])
+
+const query = ref('')
+
+const queryProducts = computed(() => {
+  let p = products.value
+  let search = query.value
+
+  if(search) {
+    p = p.filter((product) => {
+      return product.title.indexOf(search) !== -1 ||
+      product.price.toString().indexOf(search) !== -1
+
+    })
+   
+  }
+  return p
+})
+
 </script>
 
 <template>
   <div>
-    <ul>
-      <li 
-      v-for="user in users" 
-      :key="user.id"
-      v-show="user.age > 21"
+    <input 
+      type="search" 
+      placeholder="Поиск продуктов..."
+      v-model="query"
       >
-        {{ user.name}} 
-        <sup v-if="user.name !== 'Олег'">{{ user.age }}</sup>
-        <sup v-else> в возрасте...</sup>
+    <br>
+    <br>
+    <ul>
+      <li
+      v-for="product in queryProducts"
+      :key="product"
+      >
+      {{ product.title }}
+      <sup>{{ product.price.toLocaleString() }} рублей</sup>
       </li>
     </ul>
   </div>
 </template>
 
 <style scoped>
-
+.red {
+  color: red;
+}
 </style>
