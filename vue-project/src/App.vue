@@ -1,59 +1,39 @@
 <script setup>
-import { ref, computed } from 'vue';
+import AddTask from './components/AddTask.vue';
+import TaskList from './components/TaskList.vue';
+import { ref } from 'vue';
 
-const products = ref([
-  {title: 'Бананы', price: 54.5},
-  {title: 'Яблоки', price: 32},
-  {title: 'Хлеб', price: 21.59},
-  {title: 'Сметана', price: 178},
-  {title: 'Молоко', price: 122},
-  {title: 'Снеки', price: 46},
-  {title: 'Шоколад', price: 119.50},
-  {title: 'Морковь', price: 11.29},
-])
+const tasks = ref([
+  { id: 1, text: 'Learn Vue.js' },
+  { id: 2, text: 'Practice Composition API' },
+  { id: 3, text: 'Build a cool app!' },
+]);
 
-const query = ref('')
+const deleteTask = (taskId) => {
+  tasks.value = tasks.value.filter((task) => task.id !== taskId); 
+}
 
-const queryProducts = computed(() => {
-  let p = products.value
-  let search = query.value
-
-  if(search) {
-    p = p.filter((product) => {
-      return product.title.indexOf(search) !== -1 ||
-      product.price.toString().indexOf(search) !== -1
-
-    })
-   
-  }
-  return p
-})
+const addTask = (taskText) => {
+  const newTask = {
+    id: Date.now(), 
+    text: taskText,
+  };
+  tasks.value.push(newTask);
+};
 
 </script>
 
 <template>
   <div>
-    <input 
-      type="search" 
-      placeholder="Поиск продуктов..."
-      v-model="query"
-      >
-    <br>
-    <br>
-    <ul>
-      <li
-      v-for="product in queryProducts"
-      :key="product"
-      >
-      {{ product.title }}
-      <sup>{{ product.price.toLocaleString() }} рублей</sup>
-      </li>
-    </ul>
+    <TaskList :tasks="tasks" @delete-task="deleteTask">
+
+    </TaskList>
+    <AddTask @add-task="addTask">
+
+    </AddTask>
   </div>
 </template>
 
 <style scoped>
-.red {
-  color: red;
-}
+
 </style>
